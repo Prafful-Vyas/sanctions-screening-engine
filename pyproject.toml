@@ -1,0 +1,28 @@
+[project]
+name = "sanctions-screening-engine"
+version = "0.1.0"
+description = "Explainable sanctions/watchlist name screening with ML alert prioritisation"
+requires-python = ">=3.10"
+dependencies = ["scikit-learn>=1.3"]
+
+[project.optional-dependencies]
+oracle = ["oracledb>=2.0"]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+
+[tool.setuptools.packages.find]
+include = ["screening*"]
+
+[tool.ruff]
+line-length = 130
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["B905"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"

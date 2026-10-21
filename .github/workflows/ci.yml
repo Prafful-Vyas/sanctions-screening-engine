@@ -1,0 +1,19 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -e .[dev]
+      - run: ruff check .
+      - run: pytest -q
+      - run: bash -n scripts/screen_batch.sh
+      - name: end-to-end smoke run
+        run: |
+          python scripts/gen_data.py --out data --entries 300 --customers 3000
+          python -m screening evaluate --watchlist data/watchlist.csv --input data/customers.csv --labels data/labels.csv
+          python -m screening train --watchlist data/watchlist.csv --input data/customers.csv --labels data/labels.csv --out data/alert_model.json
+          bash scripts/screen_batch.sh data/customers.csv
