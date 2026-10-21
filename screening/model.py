@@ -31,11 +31,11 @@ class AlertModel:
         Path(path).write_text(json.dumps({
             "features": FEATURE_NAMES, "coef": self.coef,
             "intercept": self.intercept, "close_below": self.close_below,
-        }, indent=2))
+        }, indent=2), encoding="utf-8")
 
     @classmethod
     def load(cls, path: str | Path) -> AlertModel:
-        d = json.loads(Path(path).read_text())
+        d = json.loads(Path(path).read_text(encoding="utf-8"))
         if d["features"] != FEATURE_NAMES:
             raise ValueError(f"model features {d['features']} != engine features {FEATURE_NAMES}")
         return cls(d["coef"], d["intercept"], d["close_below"])

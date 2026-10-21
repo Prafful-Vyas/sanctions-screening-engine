@@ -33,7 +33,7 @@ WHERE run_id = :run_id
 
 def connect_sqlite(path: str | Path) -> sqlite3.Connection:
     conn = sqlite3.connect(path)
-    ddl = (Path(__file__).resolve().parent.parent / "sql" / "sqlite" / "001_schema.sql").read_text()
+    ddl = (Path(__file__).resolve().parent.parent / "sql" / "sqlite" / "001_schema.sql").read_text(encoding="utf-8")
     conn.executescript(ddl)
     return conn
 
